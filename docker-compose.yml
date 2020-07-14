@@ -1,0 +1,46 @@
+version: "3.7"
+
+x-base: &base
+  image: circleci/ruby:latest-node
+  # for system test
+  # image: circleci/ruby:latest-node-browsers
+  user: root
+  volumes:
+    - .:${PWD}
+    - gem-data:/usr/local/bundle
+    - yarn-data:/usr/local/share/.cache/yarn
+  working_dir: ${PWD}
+
+services:
+  rails:
+    <<: *base
+    command: bash -c "rm -f tmp/pids/server.pid && ./bin/rails s -b 0"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres@postgres
+      LANG: C.UTF-8
+      WEBPACKER_DEV_SERVER_HOST: webpacker
+    ports:
+      - "3000:3000"
+  webpacker:
+    <<: *base
+    command: ./bin/webpack-dev-server
+    environment:
+      WEBPACKER_DEV_SERVER_HMR: "true"
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+    ports:
+      - "3035:3035"
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  gem-data:
+  pg-data:
+  yarn-data:
