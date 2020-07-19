@@ -13,3 +13,19 @@
     <%= link_to user.email, [user] %>
   </div>
 <% end %>
+
+<hr>
+
+<% @feeds.each do |photo| %>
+  <div>
+    <div>
+      <%= link_to photo.user.email, [photo.user] %>
+    </div>
+    <div>
+      <%= image_tag photo.image %>
+    </div>
+    <div>
+      <%= photo.caption %>
+    </div>
+  </div>
+<% end %>
