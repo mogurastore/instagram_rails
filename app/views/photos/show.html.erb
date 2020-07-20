@@ -1,0 +1,34 @@
+<div>
+  <div>
+    <%= link_to @photo.user.email, [@photo.user] %>
+  </div>
+  <div>
+    <%= image_tag @photo.image %>
+  </div>
+  <div>
+    <%= @photo.caption %>
+  </div>
+</div>
+
+<% @photo.comments.each do |comment| %>
+  <div>
+    <%= link_to comment.user.email, [comment.user] %>
+  </div>
+  <div>
+    <%= comment.body %>
+  </div>
+  <% if comment.user == current_user %>
+    <div>
+      <%= link_to 'delete', [@photo, comment], method: :delete %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if user_signed_in? %>
+  <%= form_with model: [@photo, @comment], local: true do |f| %>
+    <div>
+      <%= f.text_field :body %>
+    </div>
+    <%= f.submit %>
+  <% end %>
+<% end %>
