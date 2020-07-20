@@ -22,7 +22,9 @@
       <%= link_to photo.user.email, [photo.user] %>
     </div>
     <div>
-      <%= image_tag photo.image %>
+      <%= link_to [photo] do %>
+        <%= image_tag photo.image %>
+      <% end %>
     </div>
     <div>
       <%= photo.caption %>
