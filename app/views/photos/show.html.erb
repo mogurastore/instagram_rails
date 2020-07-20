@@ -31,4 +31,10 @@
     </div>
     <%= f.submit %>
   <% end %>
+
+  <% if current_user.likes.exists?(photo_id: @photo.id) %>
+    <%= link_to 'unlike', [@photo, :like], method: :delete %>
+  <% else %>
+    <%= link_to 'like', [@photo, :like], method: :post %>
+  <% end %>
 <% end %>
