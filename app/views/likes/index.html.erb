@@ -1,0 +1,15 @@
+<% @photos.each do |photo| %>
+  <div>
+    <div>
+      <%= link_to photo.user.email, [photo.user] %>
+    </div>
+    <div>
+      <%= link_to [photo] do %>
+        <%= image_tag photo.image %>
+      <% end %>
+    </div>
+    <div>
+      <%= photo.caption %>
+    </div>
+  </div>
+<% end %>
