@@ -1,40 +1,53 @@
-<div>
-  <div>
-    <%= link_to @photo.user.email, [@photo.user] %>
+<div class="card mb-4">
+  <div class="card-image">
+    <figure class="image">
+      <%= link_to [@photo] do %>
+        <%= image_tag @photo.image %>
+      <% end %>
+    </figure>
   </div>
-  <div>
-    <%= image_tag @photo.image %>
-  </div>
-  <div>
-    <%= @photo.caption %>
+  <div class="card-content">
+    <div>
+      <%= link_to @photo.user.email, [@photo.user] %>
+    </div>
+    <div>
+      <%= @photo.caption %>
+    </div>
+    <div>
+      <% if user_signed_in? %>
+        <% if current_user.likes.exists?(photo_id: @photo.id) %>
+          <%= link_to 'unlike', [@photo, :like], method: :delete %>
+        <% else %>
+          <%= link_to 'like', [@photo, :like], method: :post %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 
-<% @photo.comments.each do |comment| %>
-  <div>
-    <%= link_to comment.user.email, [comment.user] %>
-  </div>
-  <div>
-    <%= comment.body %>
-  </div>
-  <% if comment.user == current_user %>
-    <div>
-      <%= link_to 'delete', [@photo, comment], method: :delete %>
-    </div>
-  <% end %>
-<% end %>
+<div class="card mb-4">
+  <div class="card-content">
+    <% @photo.comments.each do |comment| %>
+      <div>
+        <%= link_to comment.user.email, [comment.user] %>
+      </div>
+      <div>
+        <%= comment.body %>
+      </div>
+      <% if comment.user == current_user %>
+        <div>
+          <%= link_to 'delete', [@photo, comment], method: :delete %>
+        </div>
+      <% end %>
+    <% end %>
 
-<% if user_signed_in? %>
-  <%= form_with model: [@photo, @comment], local: true do |f| %>
-    <div>
-      <%= f.text_field :body %>
-    </div>
-    <%= f.submit %>
-  <% end %>
-
-  <% if current_user.likes.exists?(photo_id: @photo.id) %>
-    <%= link_to 'unlike', [@photo, :like], method: :delete %>
-  <% else %>
-    <%= link_to 'like', [@photo, :like], method: :post %>
-  <% end %>
-<% end %>
+    <% if user_signed_in? %>
+      <%= form_with model: [@photo, @comment], local: true do |f| %>
+        <div class="field">
+          <%= f.text_field :body, class: 'input' %>
+        </div>
+        <%= f.submit class: 'button is-primary' %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
