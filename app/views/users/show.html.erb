@@ -1,4 +1,4 @@
-<h3><%= @user.email %></h3>
+<h3 class="title"><%= @user.email %></h3>
 
 <% if user_signed_in? && current_user != @user %>
   <% if current_user.active_relationships.exists?(target_user_id: @user.id) %>
@@ -8,19 +8,37 @@
   <% end %>
 <% end %>
 
-<div>
-  <%= link_to 'followings', [@user, :followings] %>
-</div>
-<div>
-  <%= link_to 'followers', [@user, :followers] %>
-</div>
-<div>
-  <%= link_to 'likes', [@user, :likes] %>
+<div class="tabs">
+  <ul>
+    <li>
+      <%= link_to 'followings', [@user, :followings] %>
+    </li>
+    <li>
+      <%= link_to 'followers', [@user, :followers] %>
+    </li>
+    <li>
+      <%= link_to 'likes', [@user, :likes] %>
+    </li>
+  </ul>
 </div>
 
+
 <% @user.photos.each do |photo| %>
-  <div>
-    <p><%= photo.caption %></p>
-    <%= image_tag photo.image %>
+  <div class="card mb-4">
+    <div class="card-image">
+      <figure class="image">
+        <%= link_to [photo] do %>
+          <%= image_tag photo.image %>
+        <% end %>
+      </figure>
+    </div>
+    <div class="card-content">
+      <div>
+        <%= link_to photo.user.email, [photo.user] %>
+      </div>
+      <div>
+        <%= photo.caption %>
+      </div>
+    </div>
   </div>
 <% end %>
