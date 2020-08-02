@@ -42,6 +42,12 @@
     <% end %>
 
     <% if user_signed_in? %>
+      <% if @comment.errors.any? %>
+        <% @comment.errors.full_messages.each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      <% end %>
+
       <%= form_with model: [@photo, @comment], local: true do |f| %>
         <div class="field">
           <%= f.text_field :body, class: 'input' %>
