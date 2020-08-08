@@ -20,6 +20,12 @@ class PhotosController < ApplicationController
     end
   end
 
+  def destroy
+    current_user.photos.find(params[:id]).destroy
+
+    redirect_to [current_user]
+  end
+
   private
 
   def photo_params
